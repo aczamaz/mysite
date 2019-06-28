@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="style.css">
 </head>
 <body>
+<h1>Шахматы</h1>
 <table>
 <?php
 for($i=0; $i<8; $i++){
