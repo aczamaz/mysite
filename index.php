@@ -23,5 +23,6 @@ echo "</tr>";
 ?>
 </table>
 </body>
+<script src="jquery-3.4.1.js"></script>
 <script src="script.js"></script>
 </html>
