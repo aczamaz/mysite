@@ -23,4 +23,5 @@ echo "</tr>";
 ?>
 </table>
 </body>
+<script src="script.js"></script>
 </html>
