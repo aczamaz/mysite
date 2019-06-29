@@ -7,7 +7,12 @@ background-color: white;
 td{
 width: 100px;
 height: 100px;
+margin: 0px;
+padding:0px;
+text-align: center;
+vertical-align: center;
 }
-table{
-
+.game_table div{
+    width: 100px;
+    height: 100px;
 }
