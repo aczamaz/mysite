@@ -21,19 +21,19 @@ for (var i=0; i<16; i++){
         chess.x=i-8;
     };
     switch(i){
-        case 0:
+        case 0 :
             chess.img_url="img/1.png";
         break;
         case 1:
             chess.img_url="img/2.png";
         break;
-        case 2:
+        case 2 || 3:
             chess.img_url="img/3.png";
         break;
-        case 3:
+        case 4 || 5:
             chess.img_url="img/4.png";
         break;
-        case 4:
+        case 6 || 7:
             chess.img_url="img/5.png";
         break;
         default:
@@ -42,6 +42,7 @@ for (var i=0; i<16; i++){
     };
     chesses.push(chess);
 };
+function init(){
 for (var i=0; i<16; i++){
     var chess=new figure();
     chess.color=1;
@@ -63,13 +64,13 @@ for (var i=0; i<16; i++){
         case 1:
             chess.img_url="img/8.png";
         break;
-        case 2:
+        case 2 || 3:
             chess.img_url="img/9.png";
         break;
-        case 3:
+        case 4 || 5:
             chess.img_url="img/10.png";
         break;
-        case 4:
+        case 6 || 7:
             chess.img_url="img/11.png";
         break;
         default:
@@ -77,5 +78,6 @@ for (var i=0; i<16; i++){
         break;
     };
     chesses.push(chess);
+};
 };
 console.log(chesses);
