@@ -9,6 +9,7 @@ var chesses=[];//фигуры шахмат
 var color_game_table=[];//1 - черный 0 - белый
 var game_table=[];//положение фигур на доске
 var my_color=0;
+var vr_fig,vr_pos_x,vr_pos_y;
 function fill_color_game_table(){//заполнение доски черно белыми квадратами
     for(var i=0; i<8; i++){
         var table=[];
@@ -139,8 +140,14 @@ fill_table_chesses();
 $('img').draggable({
     create: function() {
         if(chesses[parseInt($(this).data('idel'))].color!=my_color){
-            $(this).draggable("disable")
+             $(this).draggable("disable")
         };
+    },
+    start: function(){
+        var elem_id=$(this).data('idel');
+        vr_pos_x=chesses[parseInt(elem_id)].x;
+        vr_pos_y=chesses[parseInt(elem_id)].y;
+        vr_fig=$("#td"+vr_pos_y+""+vr_pos_x).html();
     },
     stop: function() {
     }
@@ -163,6 +170,27 @@ $('img').mouseup(function(){
     vr1=chesses[parseInt(elem_id)].y;
     vr2=((vr1)*100)+parseInt(real_top);
     var position_y=Math.round((vr2)/100);
+    console.log($("#td"+vr_pos_y+""+vr_pos_x).html());
+    console.log(vr_pos_y+" "+vr_pos_x);
+    console.log(position_y+" "+position_x);
+    console.log($("#td"+vr_pos_y+""+vr_pos_x).html());
+    $("#td"+vr_pos_y+""+vr_pos_x).html($("#td"+position_y+""+position_x).html());
+    console.log($("#td"+position_y+""+position_x).html());
+    $("#td"+position_y+""+position_x).html(vr_fig);
+    //vr_fig=game_table[position_y][position_x];
+    game_table[position_y][position_x]=game_table[vr_pos_y][vr_pos_x];;
+    game_table[vr_pos_y][vr_pos_x]=vr_fig;
+    chesses[parseInt(elem_id)].x=position_x;
+    chesses[parseInt(elem_id)].y=position_y;
     console.log(position_x+" "+position_y);
 });
-
+function mouseShowHandler(e){
+	e = e || window.event
+	if (e.pageX == null && e.clientX != null ) { 
+		var html = document.documentElement
+		var body = document.body
+		e.pageX = e.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) - (html.clientLeft || 0)
+		e.pageY = e.clientY + (html && html.scrollTop || body && body.scrollTop || 0) - (html.clientTop || 0)
+	}
+	console.log(e.pageX+" "+ e.pageY);
+}
