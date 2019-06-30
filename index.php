@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<title>Шахматы</title>
 	<link rel="stylesheet" href="style.css">
+	<script src="jquery-3.4.1.js"></script>
+    <script src="jquery-ui.min.js"></script>
 </head>
 <body>
 <h1>Шахматы</h1>
@@ -23,6 +25,5 @@
 ?> -->
 </div>
 </body>
-<script src="jquery-3.4.1.js"></script>
 <script src="script.js"></script>
 </html>

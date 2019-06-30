@@ -8,7 +8,8 @@ var  figure=function(color,name,y,x){
 var chesses=[];//фигуры шахмат
 var color_game_table=[];//1 - черный 0 - белый
 var game_table=[];//положение фигур на доске
-function fill_color_game_table(){
+var my_color=0;
+function fill_color_game_table(){//заполнение доски черно белыми квадратами
     for(var i=0; i<8; i++){
         var table=[];
         for(var j=0; j<8; j++){
@@ -21,31 +22,11 @@ function fill_color_game_table(){
         color_game_table.push(table);
     };
 };
-function fill_game_table(){
-    game_table=[[23,21,19,16,17,18,20,22],
-                [31,30,29,28,27,26,25,24],
-                [50,50,50,50,50,50,50,50],
-                [50,50,50,50,50,50,50,50],
-                [50,50,50,50,50,50,50,50],
-                [50,50,50,50,50,50,50,50],
-                [8,9,10,11,12,13,14,15],
-                [6,4,2,0,1,3,5,7]];
-}
 function init_mass_chesses(){
     for (var i=0; i<16; i++){
         var chess=new figure();
-        chess.color=0;
+        chess.color=1;
         chess.name=i;
-        if(i<8){
-            chess.y=0;
-        }else{
-            chess.y=1;
-        };
-        if(i<8){
-            chess.x=i;
-        }else{
-            chess.x=i-8;
-        };
         if(i==0){
             chess.img_url="img/1.png";
         }else if(i==1){
@@ -63,18 +44,8 @@ function init_mass_chesses(){
     };
     for (var i=0; i<16; i++){
         var chess=new figure();
-        chess.color=1;
+        chess.color=0;
         chess.name=i+16;
-        if(i<8){
-            chess.y=0;
-        }else{
-            chess.y=1;
-        };
-        if(i<8){
-            chess.x=i;
-        }else{
-            chess.x=i-8;
-        };
         if(i==0){
             chess.img_url="img/7.png";
         }else if(i==1){
@@ -91,6 +62,35 @@ function init_mass_chesses(){
         chesses.push(chess);
     };
 };
+function fill_game_table(who_create_game){//заполнение доски фигурами
+    if(who_create_game==1){
+    game_table=[[23,21,19,16,17,18,20,22],
+                [31,30,29,28,27,26,25,24],
+                [50,50,50,50,50,50,50,50],
+                [50,50,50,50,50,50,50,50],
+                [50,50,50,50,50,50,50,50],
+                [50,50,50,50,50,50,50,50],
+                [8,9,10,11,12,13,14,15],
+                [6,4,2,0,1,3,5,7]];
+    }else{
+        game_table=[[6,4,2,0,1,3,5,7],
+                [8,9,10,11,12,13,14,15],
+                [50,50,50,50,50,50,50,50],
+                [50,50,50,50,50,50,50,50],
+                [50,50,50,50,50,50,50,50],
+                [50,50,50,50,50,50,50,50],
+                [31,30,29,28,27,26,25,24],
+                [23,21,19,16,17,18,20,22]];
+    };
+    for(var i=0; i<8; i++){
+        for(var j=0; j<8; j++){
+            if(game_table[i][j]!=50){
+                chesses[game_table[i][j]].x=j;
+                chesses[game_table[i][j]].y=i;
+            };
+        };
+    };
+};
 function fill_table_colors(){
     $("#game_table").html("");
     var ready_table="<table>";
@@ -98,9 +98,21 @@ function fill_table_colors(){
         ready_table+="<tr>";
         for(var j=0; j<8; j++){
             if(color_game_table[i][j]==0){
-                ready_table+="<td class='white' id="+"td"+(i)+""+(j)+" ><img id="+"img"+(i)+""+(j)+"></td>";
+                ready_table+="<td class='white' id="+"td"+(i)+""+(j)+" >";
+                if(game_table[i][j]!=50){
+                    ready_table+="<img data-idel="+game_table[i][j]+" id="+"img"+(i)+""+(j)+">";
+                    ready_table+="</td>";
+                }else{
+                    ready_table+="</td>";
+                };
             }else{
-                ready_table+="<td class='black' id="+"td"+(i)+""+(j)+" ><img id="+"img"+(i)+""+(j)+"></td>";
+                ready_table+="<td class='black' id="+"td"+(i)+""+(j)+" >";
+                if(game_table[i][j]!=50){
+                    ready_table+="<img data-idel="+game_table[i][j]+" id="+"img"+(i)+""+(j)+">";
+                    ready_table+="</td>";
+                }else{
+                    ready_table+="</td>";
+                };
             };
         };
         ready_table+="</tr>";    
@@ -113,15 +125,44 @@ function fill_table_chesses(){
         for(var j=0; j<8; j++){
             if(game_table[i][j]!=50){
                 $("#"+"img"+i+""+j).attr('src',chesses[game_table[i][j]].img_url);
-            }else{
-                $("#"+"img"+i+""+j).attr('src',"");
             };
         };
     };
 };
-fill_game_table();
+
 init_mass_chesses();
+fill_game_table();
 fill_color_game_table();
 fill_table_colors();
 fill_table_chesses();
-console.log($("#game_table"));
+//drag on drop
+$('img').draggable({
+    create: function() {
+        if(chesses[parseInt($(this).data('idel'))].color!=my_color){
+            $(this).draggable("disable")
+        };
+    },
+    stop: function() {
+    }
+});
+$('img').mouseup(function(){
+    var top=$(this).css('top');
+    var left=$(this).css('left');
+    var real_top="";
+    var real_left="";
+    for(var i=0; i<top.length-2;i++){
+        real_top+=top[i];
+    };
+    for(var i=0; i<left.length-2;i++){
+        real_left+=left[i]; 
+    };
+    var elem_id=$(this).data('idel');
+    var vr1=chesses[parseInt(elem_id)].x;
+    var vr2=((vr1)*100)+parseInt(real_left);
+    var position_x=Math.round((vr2)/100);
+    vr1=chesses[parseInt(elem_id)].y;
+    vr2=((vr1)*100)+parseInt(real_top);
+    var position_y=Math.round((vr2)/100);
+    console.log(position_x+" "+position_y);
+});
+
