@@ -154,12 +154,22 @@ $('img').draggable({
 });
 $('img').mouseup(function(){
     var elem_id=$(this).data('idel');
-    var position_x=Math.ceil(($(this).offset().left - $("table").offset().left)/100)-1;
-    var position_y=Math.ceil(($(this).offset().top-$("table").offset().top)/100)-1;
+    var position_x=Math.ceil(($(this).offset().left - $("table").offset().left)/100);
+    if(position_x<=0){
+        position_x=0;
+    }else{
+        position_x-=1;
+    };
+    var position_y=Math.ceil(($(this).offset().top-$("table").offset().top)/100);
+    if(position_y<=0){
+        position_y=0;
+    }else{
+        position_y-=1;
+    };
     console.log(position_x+" "+position_y+" "+($(this).offset().left-$("table").offset().left)+" "+($(this).offset().top-$("table").offset().top));
     $("#td"+vr_pos_y+""+vr_pos_x).html($("#td"+position_y+""+position_x).html());
     $("#td"+position_y+""+position_x).html(vr_fig);
-    game_table[position_y][position_x]=game_table[vr_pos_y][vr_pos_x];;
+    game_table[position_y][position_x]=game_table[vr_pos_y][vr_pos_x];
     game_table[vr_pos_y][vr_pos_x]=vr_fig;
     chesses[parseInt(elem_id)].x=position_x;
     chesses[parseInt(elem_id)].y=position_y;
