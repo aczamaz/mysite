@@ -153,44 +153,14 @@ $('img').draggable({
     }
 });
 $('img').mouseup(function(){
-    var top=$(this).css('top');
-    var left=$(this).css('left');
-    var real_top="";
-    var real_left="";
-    for(var i=0; i<top.length-2;i++){
-        real_top+=top[i];
-    };
-    for(var i=0; i<left.length-2;i++){
-        real_left+=left[i]; 
-    };
     var elem_id=$(this).data('idel');
-    var vr1=chesses[parseInt(elem_id)].x;
-    var vr2=((vr1)*100)+parseInt(real_left);
-    var position_x=Math.round((vr2)/100);
-    vr1=chesses[parseInt(elem_id)].y;
-    vr2=((vr1)*100)+parseInt(real_top);
-    var position_y=Math.round((vr2)/100);
-    console.log($("#td"+vr_pos_y+""+vr_pos_x).html());
-    console.log(vr_pos_y+" "+vr_pos_x);
-    console.log(position_y+" "+position_x);
-    console.log($("#td"+vr_pos_y+""+vr_pos_x).html());
+    var position_x=Math.ceil(($(this).offset().left - $("table").offset().left)/100)-1;
+    var position_y=Math.ceil(($(this).offset().top-$("table").offset().top)/100)-1;
+    console.log(position_x+" "+position_y+" "+($(this).offset().left-$("table").offset().left)+" "+($(this).offset().top-$("table").offset().top));
     $("#td"+vr_pos_y+""+vr_pos_x).html($("#td"+position_y+""+position_x).html());
-    console.log($("#td"+position_y+""+position_x).html());
     $("#td"+position_y+""+position_x).html(vr_fig);
-    //vr_fig=game_table[position_y][position_x];
     game_table[position_y][position_x]=game_table[vr_pos_y][vr_pos_x];;
     game_table[vr_pos_y][vr_pos_x]=vr_fig;
     chesses[parseInt(elem_id)].x=position_x;
     chesses[parseInt(elem_id)].y=position_y;
-    console.log(position_x+" "+position_y);
 });
-function mouseShowHandler(e){
-	e = e || window.event
-	if (e.pageX == null && e.clientX != null ) { 
-		var html = document.documentElement
-		var body = document.body
-		e.pageX = e.clientX + (html && html.scrollLeft || body && body.scrollLeft || 0) - (html.clientLeft || 0)
-		e.pageY = e.clientY + (html && html.scrollTop || body && body.scrollTop || 0) - (html.clientTop || 0)
-	}
-	console.log(e.pageX+" "+ e.pageY);
-}
